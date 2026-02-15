@@ -1,23 +1,6 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2024/04/23 12:42:16
-// Design Name: 
-// Module Name: NPC
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+
+// 该模块对应下一指令的地址
 
 module NPC#(
     parameter   DATAWIDTH = 32
@@ -33,11 +16,12 @@ assign pcadd4 = pc + 4;
 always_comb begin
     
     case (npc_op)
-        2'b00: npc = pc + 4;
-        2'b01: npc = isTrue ? (pc + offset) : pc+4;
-        2'b10: npc = (~1)&offset;
+        2'b00: npc = pc + 4; //对应非跳转指令
+        2'b01: npc = isTrue ? (pc + offset) : pc+4;   //根据判断条件决定是否是跳转指令
+        2'b10: npc = (~1)&offset;    //jalr指令
         2'b11: npc = pc + offset;
         default: npc = 0;
     endcase
 end
+
 endmodule
