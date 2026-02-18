@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-
+//采用单极译码方式，用ACTL模块输出对应的信号进入ALU中
 module ACTL(
     input  logic [6:0] opcode,
     input  logic [3:0] funct,
@@ -36,7 +36,7 @@ module ACTL(
             {7'b0010011, 4'b0001}: ALUControl = 4'b0101; // SLLI
             
             // SRLI (funct3=101, inst[30]=0) -> funct=0101
-            // 之前可能这里被错写成了 AND，导致 60&2=0
+            
             {7'b0010011, 4'b0101}: ALUControl = 4'b0110; // SRLI 
             
             // SRAI (funct3=101, inst[30]=1) -> funct=1101

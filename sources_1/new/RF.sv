@@ -1,23 +1,6 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2024/05/08 12:42:16
-// Design Name: 
-// Module Name: RF
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+//寄存器堆的读取与写入操作
+
 
 module RF #(
     parameter   ADDR_WIDTH = 5  ,
@@ -25,44 +8,33 @@ module RF #(
 )(
     input  logic                    clk            ,
     input  logic                    rst            ,
-    // Write rd                   
+    // 写入                  
     input  logic                    wen      ,
     input  logic [ADDR_WIDTH - 1:0] waddr    ,
     input  logic [DATAWIDTH - 1:0]  wdata       ,
-    // Read  rs1 rs2
+    // 读取
     input  logic [ADDR_WIDTH - 1:0] rR1   ,
     input  logic [ADDR_WIDTH - 1:0] rR2   ,
 
     output logic [DATAWIDTH - 1:0]  rR1_data  ,
     output logic [DATAWIDTH - 1:0]  rR2_data
 );
-    logic [DATAWIDTH - 1:0] reg_bank [31:0];
- // -----------------------------------------------------
-    // 1. ������ (Read Operations) - ����߼�
-    // -----------------------------------------------------
-    // ������߼��ǣ��������ַ��0�������0��RISC�ܹ������淶��0�żĴ�����Ϊ0����
-    // ���������Ӧ��ַ�ļĴ���ֵ��
-    // ������ʵ�鲻Ҫ��0�żĴ�����Ϊ0������ֱ��д��assign rs_reg1_rdata = reg_bank[rs_reg1_addr];
-    
-  // ֱ�Ӷ�ȡ reg_bank ���飬���ٶ� 0 ��ַ�������ж�
-assign  rR1_data = reg_bank[rR1];
+    logic [DATAWIDTH - 1:0] reg_bank [31:0];    //设置寄存器堆，32个寄存器，每个寄存器DATAWIDTH位宽
+ 
+ //读出操作——————————————利用地址，输出从寄存器堆中的读出的数据
+assign  rR1_data = reg_bank[rR1]; 
 assign rR2_data = reg_bank[rR2];
-    // -----------------------------------------------------
-    // 2. д���� (Write Operations) - ʱ���߼�
-    // -----------------------------------------------------
-    // ����������wr_reg_enΪ1ʱд�룬rstΪ�첽�ߵ�ƽ��λ
-    
-    integer i; // ����ѭ����λ
+   
+// 写入操作——————————————当满足wen有效且写入地址不为0时，将wdata写入寄存器堆中对应地址的寄存器
+    integer i; 
     always_ff @(posedge clk or posedge rst) begin
         if (rst) begin
-            // �첽��λ�������мĴ�������
+            
             for (i = 0; i < 32; i = i + 1) begin
                 reg_bank[i] <= {DATAWIDTH{1'b0}};
             end
         end
         else if (wen && (waddr != 0)) begin
-            // дʹ����Ч �� д���ַ��Ϊ0 ʱд������
-            // (ͬ����Ϊ�˱���0�żĴ���������д)
             reg_bank[waddr] <= wdata;
         end
     end

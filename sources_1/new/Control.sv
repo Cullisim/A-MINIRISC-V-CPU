@@ -1,36 +1,19 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2024/04/30 8:26:09
-// Design Name: 
-// Module Name: Control
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+//根据opcode生成控制信号
+
 
 module Control(
-    input  logic [6:0]  opcode      ,
-    output logic [1:0]  NpcOp       ,
-    output logic        RegWrite    ,
-    output logic [1:0]  MemToReg    ,
+    input  logic [6:0]  opcode      ,   
+    output logic [1:0]  NpcOp       ,    // 00: 普通指令, 01: 条件跳转, 10: 寄存器跳转, 11: 无条件跳转
+    output logic        RegWrite    ,    // 寄存器写使能
+    output logic [1:0]  MemToReg    ,    // 00: ALU结果, 01: 内存数据, 10: PC+4, 11: imm
     output logic        MemWrite    ,
     output logic        OffsetOrigin,
     output logic        ALUSrc      
 );
-   // controller module
+   
    always_comb begin
-   // ... inside always_comb ...
+   
 case (opcode)
     // 1. R-Type (ADD, SUB, AND, OR, XOR, SLL, SRL, SRA)
     7'b0110011: begin 
