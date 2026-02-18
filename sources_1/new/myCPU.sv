@@ -1,29 +1,12 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2024/04/24 10:51:04
-// Design Name: 
-// Module Name: myCPU
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+//无IROM和DRAM接口的soc模块例化，预留接口，用于IROM和DRAM连接
+//根据架构图连接
 
 module myCPU (
     input  logic         cpu_rst,
     input  logic         cpu_clk,
 
-    // Interface to IROM, you need add some signals
+    
     // 1. 新增：IROM (指令存储器) 接口
     // ============================================
     output logic [31:0]  inst_addr,     // PC 输出
@@ -46,7 +29,7 @@ module myCPU (
 
 );
 
-    // TODO: 完成你自己的单周期CPU设计
+
     
    // ... 信号定义区域 ...
     logic [31:0] npc_offset_input; // 新增一个中间信号
